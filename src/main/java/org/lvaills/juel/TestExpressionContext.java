@@ -33,7 +33,7 @@ public class TestExpressionContext {
         expression = "${myBean.foo} ${exchange.host}";
 
         SimpleContext evalContext = new SimpleContext();
-        evalContext.setVariable("exchange", factory.createValueExpression(new MyExchange("www.forgerock.com"), MyExchange.class));
+        evalContext.setVariable("exchange", factory.createValueExpression(new MyExchange("www.example.com"), MyExchange.class));
 
         ValueExpression expr = factory.createValueExpression(createContext, expression, String.class);
         System.out.println("expr Class : " + expr.getClass());
