@@ -15,6 +15,10 @@
  */
 package org.lvaills.juel;
 
+import static java.util.Arrays.*;
+
+import java.util.List;
+
 import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
 
@@ -32,13 +36,18 @@ public class TestExpressionContext {
         String expression;
         expression = "${myBean.foo} ${exchange.host}";
 
-        SimpleContext evalContext = new SimpleContext();
-        evalContext.setVariable("exchange", factory.createValueExpression(new MyExchange("www.example.com"), MyExchange.class));
-
         ValueExpression expr = factory.createValueExpression(createContext, expression, String.class);
         System.out.println("expr Class : " + expr.getClass());
-        System.out.println(expression + " = " + expr.getValue(evalContext)); // 1.0
 
+
+        SimpleContext evalContext = new SimpleContext();
+        List<String> hosts = asList("www.example.com", "www.foo.com", "www.bar.com");
+
+        // I want to evaluate the same expression, but with different values for the variable exchange.
+        for (String host : hosts) {
+            evalContext.setVariable("exchange", factory.createValueExpression(new MyExchange(host), MyExchange.class));
+            System.out.println(expression + " = " + expr.getValue(evalContext));
+        }
     }
 
 }
